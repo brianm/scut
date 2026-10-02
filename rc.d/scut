@@ -1,0 +1,25 @@
+#!/bin/sh
+
+# PROVIDE: scut
+# REQUIRE: NETWORKING tailscaled
+# KEYWORD: shutdown
+
+# scut_enable: Set to YES to enable (default NO).
+# scut_args: Command-line arguments passed to scut.
+
+. /etc/rc.subr
+
+name=scut
+rcvar=scut_enable
+
+load_rc_config "$name"
+
+: ${scut_enable:="NO"}
+: ${scut_args:=""}
+
+pidfile="/var/run/${name}.pid"
+procname="/usr/local/sbin/scut"
+command="/usr/sbin/daemon"
+command_args="-S -T ${name} -p ${pidfile} ${procname} ${scut_args}"
+
+run_rc_command "$1"
